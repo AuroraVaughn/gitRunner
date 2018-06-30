@@ -9,6 +9,7 @@ https://api.github.com/repos/${owner}/${repoName}/git/trees/${sha}?recursive=1
 Returns an object with an array tree.
 Tree is an array of objects. 
 The objects look like this:  
+```javascript
 {
             "path": ".babelrc",
             "mode": "100644",
@@ -17,12 +18,13 @@ The objects look like this:
             "size": 1415,
             "url": "https://api.github.com/repos/Team-PiRoutes/pet-costumes/git/blobs/0fe3e358294e0f5f61cfc9a81e1e1b62fa4707a6"
         }
-
+```
 response.tree[0].path  will be the file path of the first file in the root folder
 IDENTIFYING FOLDERS - folders have type of tree, while other files have type blob
 
 
-JSON FORMATTED TILE MAPS    
+JSON FORMATTED TILE MAPS 
+```javascript
 { "height":20,
  "layers":[
         {
@@ -69,7 +71,7 @@ JSON FORMATTED TILE MAPS
  "version":1,
  "width":50
 }
-
+```
 
 things to set on json
 json.height = number of tiles high
