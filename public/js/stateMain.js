@@ -3,12 +3,11 @@ function stateMain() {
 
         preload: function () {
             this.load.spritesheet('robot', 'images/main/robot.png', 80, 111, 28);
-
             //adding map/level
 
             // null is for if you have json already loaded
             // game.load.tilemap('map', 'maps/map1.json', null, Phaser.Tilemap.TILED_JSON)
-            console.dir(mapObj)
+            // console.dir(mapObj)
             game.load.tilemap('map', 'maps/mapTest.json', mapObj, Phaser.Tilemap.TILED_JSON)
             game.load.image('tiles', 'images/tiles.png')
             game.load.image('phaser', 'images/git-runner-logo.png')
@@ -16,8 +15,6 @@ function stateMain() {
 
         create: function () {
             console.log('Ready!')
-
-
             game.physics.startSystem(Phaser.Physics.ARCADE)
 
             // /*load map*/
@@ -29,7 +26,8 @@ function stateMain() {
             this.layer.resizeWorld()
             // console.log(Math.ceil(this.map.height / 2) * 64)
             // this.robot = game.add.sprite(0, 0 * 62, 'robot')
-            this.robot = game.add.sprite(0, Math.ceil(this.map.height / 2) * 64, 'robot')
+            const tileSize = 64
+            this.robot = game.add.sprite(0, Math.ceil(this.map.height / 2) * tileSize + (tileSize * -0.75), 'robot')
             //sets collision for the map to be tiles 0 thru 24. this only excludes the bomb at this time.
             this.titleImage = game.add.image(6 * 64, (Math.ceil(this.map.height / 2) - 3) * 64 - 20, 'phaser');
 

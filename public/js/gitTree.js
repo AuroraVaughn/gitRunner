@@ -8,7 +8,7 @@ const repo = 'https://github.com/facebook/react'
 async function readyGameSeed(repo) {
   try {
     let finished = await getSeed(repo)
-    console.log(' readyGameSeed, get seed complete', finished)
+
     return finished
 
     async function getSeed(repo) {
@@ -21,31 +21,22 @@ async function readyGameSeed(repo) {
           const sha = await getShaOfMaster(repo)
           const tree = await getTreeOfRepo(repo, sha)
           downloadObjectAsJson(tree, 'repoResults')
-
-          /*local copy for testin*/
         } else {
+          /* local cache used because of github rate limit */
           console.log('using local cache')
           tree = getRepoDataLocal()
         }
-        console.log('tree ', tree)
         let output = await createFileTree(tree)
-        console.log('get seed  output, ', output)
         setAllDimensions(output)
-
         setTargets(output)
-
         output.root = output
-        console.log('end of get seed', output)
         return output
       } catch (err) {
         console.error(err)
       }
-
     }
   } catch (err) { console.error(err) }
 }
-
-
 
 function createFileTree(tree) {
   const fileTree = {
@@ -76,7 +67,6 @@ function createFileTree(tree) {
         console.error(`in folder ${this.pathStr} attempted to access mid but this.ceiling or
        this.floor was not defined, floor: ${this.floor}, ceiling: ${this.ceiling} `)
       }
-
     },
     get floor() {
       let padding = 1.4
@@ -88,22 +78,14 @@ function createFileTree(tree) {
     get height() {
       return this.floor - this.ceiling
     }
-
   }
 
   tree.forEach(file => {
-    // const arr = file.path.split('/')
-
     if (file.path[0] !== '.') {
-
-      //   insertFolder(fileTree, file, file.path)
-      //   // fileTree['/' + file.path] = []
-      // } else if (file.path[0] !== '.') {
       buildTreeWithMetaData(fileTree, file, file.path)
-
     }
   })
-  console.log('fileTree')
+
   return fileTree
 }
 async function getShaOfMaster(repo) {
@@ -192,7 +174,6 @@ function buildTreeWithMetaData(rootDir, file, pathStr) {
 
 function setAllDimensions(node, iter = true) {
   try {
-    console.log('setting dimensions for nodes on git tree')
     let currentNode = node
     let lastCeilingValue = currentNode.ceiling
 
@@ -211,12 +192,12 @@ function setAllDimensions(node, iter = true) {
     console.error(err)
     throw err
   }
-  if (iter) console.log("completed setTargets")
+
 }
 
 function setTargets(node, i = true) {
   try {
-    console.log('setting targets on tree nodes in gitTree')
+
     let children = node.children
     if (children.length > 0) {
       node.target = Math.floor(children.reduce((target, child) => {
@@ -227,13 +208,12 @@ function setTargets(node, i = true) {
         setTargets(children[i], false)
       }
     } else {
-      // console.log(node)
+
       node.target = node.prev.target
     }
-    // console.log(node)
+
   } catch (err) {
     console.error(err)
     throw err
   }
-  if (i) console.log("completed setTargets")
 }
