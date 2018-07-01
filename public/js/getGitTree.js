@@ -5,37 +5,40 @@ const repo = 'https://github.com/facebook/react'
 
 
 // let gameSeed = readyGameSeed(repo)
-async function readyGameSeed(repo) {
-  try {
-    let finished = await getSeed(repo)
+async function getGitTree(repo) {
 
-    return finished
+  let finished = await getSeed(repo)
 
-    async function getSeed(repo) {
-      try {
-        /* git hub calls.  */
-        const useLocals = true
-        let tree;
-        if (!useLocals) {
+  return finished
+
+  async function getSeed(repo) {
+    try {
+      /* git hub calls.  */
+      const useLocals = false
+      let tree;
+      if (!useLocals) {
+        try {
           console.log('retrieving repo from github')
           const sha = await getShaOfMaster(repo)
-          const tree = await getTreeOfRepo(repo, sha)
-          downloadObjectAsJson(tree, 'repoResults')
-        } else {
-          /* local cache used because of github rate limit */
-          console.log('using local cache')
-          tree = getRepoDataLocal()
-        }
-        let output = await createFileTree(tree)
-        setAllDimensions(output)
-        setTargets(output)
-        output.root = output
-        return output
-      } catch (err) {
-        console.error(err)
+          console.log('sha - ', sha)
+          tree = await getTreeOfRepo(repo, sha)
+
+          // downloadObjectAsJson(tree, 'repoResults')
+        } catch (err) { console.error(err) }
+      } else {
+        /* local cache used because of github rate limit */
+        console.log('using local cache')
+        tree = getRepoDataLocal()
       }
+      let output = await createFileTree(tree)
+      setAllDimensions(output)
+      setTargets(output)
+      output.root = output
+      return output
+    } catch (err) {
+      console.error(err)
     }
-  } catch (err) { console.error(err) }
+  }
 }
 
 function createFileTree(tree) {
@@ -90,7 +93,7 @@ function createFileTree(tree) {
 }
 async function getShaOfMaster(repo) {
   try {
-    [owner, repoName] = prefixURL(repo)
+    let [owner, repoName] = repo
 
     return axios.get(`https://api.github.com/repos/${owner}/${repoName}/commits`)
       .then(res => res.data[0].sha)
@@ -98,19 +101,19 @@ async function getShaOfMaster(repo) {
 }
 async function getTreeOfRepo(repo, sha) {
   try {
-    [owner, repoName] = prefixURL(repo)
+    let [owner, repoName] = repo
     return axios.get(`https://api.github.com/repos/${owner}/${repoName}/git/trees/${sha}?recursive=1`)
       .then(res => res.data.tree).catch(console.error)
   } catch (err) { console.error(err) }
 }
-function prefixURL(repo) {
-  try {
-    //https://github.com/Team-PiRoutes/pet-costumes
-    console.log('need to fix tokenize error by 3 and 4 being .length - 2 ans .length -1')
-    const tokenizedRepo = repo.split('/')
-    return [tokenizedRepo[3], tokenizedRepo[4]]
-  } catch (err) { console.error(err) }
-}
+// function prefixURL(repo) {
+//   try {
+//     //https://github.com/Team-PiRoutes/pet-costumes
+//     console.log('need to fix tokenize error by 3 and 4 being .length - 2 ans .length -1')
+//     const tokenizedRepo = repo.split('/')
+//     return [tokenizedRepo[3], tokenizedRepo[4]]
+//   } catch (err) { console.error(err) }
+// }
 
 
 
@@ -216,4 +219,9 @@ function setTargets(node, i = true) {
     console.error(err)
     throw err
   }
+}
+function retrieveChild(childName, childrenArray) {
+  return childrenArray.find(child => {
+    return child.folderName === childName
+  })
 }

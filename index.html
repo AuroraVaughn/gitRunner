@@ -2,31 +2,59 @@
 <html lang="">
 
 <head>
-
     <meta charset="UTF-8">
     <title>Git Runner</title>
-    <script>
-        //defined for use in git tree
-        function retrieveChild(childName, childrenArray) {
-            return childrenArray.find(child => {
-                return child.folderName === childName
-            })
-        }
-
-    </script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        var StateMain // required for stateMain then main.js
+        var game  //required for main.js
+        function onClickBuildGame() {
+            const inputs = document.querySelectorAll('.info input')
+            const repo = [inputs[0].value, inputs[1].value]
+            console.log(repo)
+            getGitTree(repo).then(readySeed => {
+
+                return constructionCompany(seedRubric, mapObj, readySeed)
+
+
+
+
+            }).then(construction => {
+                StateMain = stateMain()
+                createGame()
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <!-- <div align="center"></div> -->
+    <fieldset>
+        <legend>Repo details:</legend>
+        <div class="info">
+            <label for="owner">Account/Organization:</label>
+            <input type="text" id="uname" name="account" required minLength="1" placeholder="enter repo name" />
+            <span class="validity"></span>
+
+        </div>
+        <div class="info">
+            <label for="reponame">User Name:</label>
+            <input type="text" id="uname" name="reponame" required minLength="1" placeholder="enter repo name" />
+            <span class="validity"></span>
+
+        </div>
+        <button onclick="onClickBuildGame()" id="build-button">Build Game</button>
+
+    </fieldset>
+    <div id="ph_game"></div>
+
     <script src="js/ConstructionWorker.js"></script>
     <script src="js/seedRubric.js"></script>
-    <!-- <script>src = "https://cdnjs.cloudflare.com/ajax/libs/phaser-ce/2.10.5/phaser.min.js"</script> -->
     <script src="js/folderClass.js"> </script>
     <script src="js/phaser.min.js"> </script>
-    <script src="js/oldRepoData.js"> </script>
-    <script src="js/gitTree.js"></script>
-
-    <script>
-
-    </script>
+    <!-- <script src="js/oldRepoData.js"> </script> -->
+    <script src="js/getGitTree.js"></script>
     <script src="js/getMapObj.js"> </script>
     <script>
         const mapObj = getMapObj()
@@ -34,42 +62,9 @@
 
     </script>
     <script src="js/seedReader.js"></script>
-    <!-- <script> src = "js/seedReaderFriday.js"</script> -->
+
     <script src="js/main.js"></script>
     <script src="js/stateMain.js"></script>
-    <script>
-        let calls = 0
-        var StateMain // required for stateMain then main.js
-        var game  //required for main.js
-        console.log('repo', repo)
-        readyGameSeed(repo).then(readySeed => {
-
-            return constructionCompany(seedRubric, mapObj, readySeed)
-
-
-
-            // downloadObjectAsJson(mapObj, 'peanutTest')
-            // function downloadObjectAsJson(exportObj, exportName) {
-            //     var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
-            //     var downloadAnchorNode = document.createElement('a');
-            //     downloadAnchorNode.setAttribute("href", dataStr);
-            //     downloadAnchorNode.setAttribute("download", exportName + ".json");
-            //     downloadAnchorNode.click();
-            //     downloadAnchorNode.remove();
-            // }
-        }).then(construction => {
-            StateMain = stateMain()
-            createGame()
-        })
-
-    </script>
-
-</head>
-
-<body>
-    <div align="center"></div>
-    <div id="ph_game"></div>
-    </div>
 
 </body>
 
