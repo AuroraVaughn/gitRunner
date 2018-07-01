@@ -1,32 +1,45 @@
 body {
-    padding: 0;
-    margin: 0;
+  font-size: 12px;
+  padding: 0;
+  margin: 0;
+  color: #dd510e;
+  text-shadow: black;
+  font-family: "Lucida Console", Monaco, monospace;
 }
 
-#wrongWayPortrait {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    background-color: white;
-    background-image: url('../images/turn-p.png');
-    background-repeat: no-repeat;
-    background-position: center center;
-    display: none;
-    z-index: 2;
+.input-field {
+  font-size: 1.1rem;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+  /* background-color: #dd510e; */
+  background-color: #dce2e6;
+  ;
+  /* text-shadow: -1px -1px #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; */
 }
 
-#wrongWayLandscape {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    background-color: white;
-    background-image: url('../images/turn-l.png');
-    background-repeat: no-repeat;
-    background-position: center center;
-    display: none;
-    z-index: 2;
+.info {
+  font-size: .95rem;
+  margin: 0;
+  display: inline-block;
+  padding: 4px;
+  width: content;
+}
+
+.info input {
+  background-color: #dce2e6;
+}
+
+.instruction {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+#build-button {
+  position: absolute;
+  background-color: #dce2e6;
+  padding: 5px;
+  margin: 5px;
 }

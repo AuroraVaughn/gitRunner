@@ -14,7 +14,7 @@ async function getGitTree(repo) {
   async function getSeed(repo) {
     try {
       /* git hub calls.  */
-      const useLocals = false
+      const useLocals = true
       let tree;
       if (!useLocals) {
         try {
@@ -106,16 +106,6 @@ async function getTreeOfRepo(repo, sha) {
       .then(res => res.data.tree).catch(console.error)
   } catch (err) { console.error(err) }
 }
-// function prefixURL(repo) {
-//   try {
-//     //https://github.com/Team-PiRoutes/pet-costumes
-//     console.log('need to fix tokenize error by 3 and 4 being .length - 2 ans .length -1')
-//     const tokenizedRepo = repo.split('/')
-//     return [tokenizedRepo[3], tokenizedRepo[4]]
-//   } catch (err) { console.error(err) }
-// }
-
-
 
 function buildTreeWithMetaData(rootDir, file, pathStr) {
   // I moved this all into one function because I believed I had an error with the order

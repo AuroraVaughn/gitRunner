@@ -4,15 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Git Runner</title>
-
+    <link rel="stylesheet" href="css/style.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         var StateMain // required for stateMain then main.js
         var game  //required for main.js
+
         function onClickBuildGame() {
             const inputs = document.querySelectorAll('.info input')
             const repo = [inputs[0].value, inputs[1].value]
-            console.log(repo)
+
             getGitTree(repo).then(readySeed => {
 
                 return constructionCompany(seedRubric, mapObj, readySeed)
@@ -30,30 +31,26 @@
 
 <body>
     <!-- <div align="center"></div> -->
-    <fieldset>
-        <legend>Repo details:</legend>
+    <div class='input-field'>
+
+        <div class="instruction">Enter the Github Repo Information</div>
         <div class="info">
             <label for="owner">Account/Organization:</label>
             <input type="text" id="uname" name="account" required minLength="1" placeholder="enter repo name" />
-            <span class="validity"></span>
-
         </div>
         <div class="info">
-            <label for="reponame">User Name:</label>
+            <label for="reponame">Owner/Project Name:</label>
             <input type="text" id="uname" name="reponame" required minLength="1" placeholder="enter repo name" />
-            <span class="validity"></span>
-
         </div>
-        <button onclick="onClickBuildGame()" id="build-button">Build Game</button>
-
-    </fieldset>
+    </div>
+    <button onclick="onClickBuildGame()" id="build-button">Build Game</button>
     <div id="ph_game"></div>
 
     <script src="js/ConstructionWorker.js"></script>
     <script src="js/seedRubric.js"></script>
     <script src="js/folderClass.js"> </script>
     <script src="js/phaser.min.js"> </script>
-    <!-- <script src="js/oldRepoData.js"> </script> -->
+    <script src="js/oldRepoData.js"> </script>
     <script src="js/getGitTree.js"></script>
     <script src="js/getMapObj.js"> </script>
     <script>
@@ -65,6 +62,9 @@
 
     <script src="js/main.js"></script>
     <script src="js/stateMain.js"></script>
+    <!-- <script> /* COMMENT OUT FOR DEPLOY*/
+        onClickBuildGame()
+            /* ^^^^ Comment out for deploy */</script> -->
 
 </body>
 
