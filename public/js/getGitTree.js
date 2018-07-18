@@ -1,4 +1,4 @@
-const repo = 'https://github.com/facebook/react'
+// const repo = 'https://github.com/facebook/react'
 // const repo = 'https://github.com/Team-PiRoutes/pet-costumes'
 
 
@@ -7,39 +7,65 @@ const repo = 'https://github.com/facebook/react'
 // let gameSeed = readyGameSeed(repo)
 async function getGitTree(repo) {
 
-  let finished = await getSeed(repo)
+  let tree = await getSeed(repo)
 
-  return finished
+  let output = await createFileTree(tree)
 
-  async function getSeed(repo) {
+  console.log('completed createFileTree')
+  console.log(output)
+  output = setAllDimensions(output)
+  console.log('completed setAllDimensions')
+  console.log(output)
+  output = setTargets(output)
+  console.log('completed setTargets')
+  console.log(output)
+
+  output.root = output
+  return output
+
+
+}
+
+async function getSeed(repo) {
+
+  /* git hub calls.  */
+  let localStorageCacheKey = repo.join('-'),
+    useLocals = false,
+    localData = window.localStorage.getItem(localStorageCacheKey)
+
+  if (localData !== null) {
+    localData = JSON.parse(localData)
+    console.log('typeof localData ', typeof localData, ' return ', localData.tree)
+    useLocals = (+localData.date + 86400000) >= (Date.now())
+  }
+
+  // useLocals = true
+  if (useLocals) {
+    /* local cache used because of github rate limit so refreshing
+so I am using the date to prevent multiple calls to the same
+repo in one day.
+
+I would use the sha, but that requires the user to get it or 
+a github api call. */
+    console.log('using local cache')
+    return localData.tree
+  } else {
     try {
-      /* git hub calls.  */
-      const useLocals = true
-      let tree;
-      if (!useLocals) {
-        try {
-          console.log('retrieving repo from github')
-          const sha = await getShaOfMaster(repo)
-          console.log('sha - ', sha)
-          tree = await getTreeOfRepo(repo, sha)
+      console.log('retrieving repo from github')
+      let sha = await getShaOfMaster(repo)
+      let tree = await getTreeOfRepo(repo, sha)
 
-          // downloadObjectAsJson(tree, 'repoResults')
-        } catch (err) { console.error(err) }
-      } else {
-        /* local cache used because of github rate limit */
-        console.log('using local cache')
-        tree = getRepoDataLocal()
-      }
-      let output = await createFileTree(tree)
-      setAllDimensions(output)
-      setTargets(output)
-      output.root = output
-      return output
-    } catch (err) {
-      console.error(err)
-    }
+      localData = { date: Date.now(), sha, tree }
+      window.localStorage.setItem(
+        localStorageCacheKey,
+        JSON.stringify(localData)
+      )
+
+      return tree
+    } catch (err) { console.error(err) }
   }
 }
+
 
 function createFileTree(tree) {
   const fileTree = {
@@ -185,10 +211,16 @@ function setAllDimensions(node, iter = true) {
     console.error(err)
     throw err
   }
-
+  return node
 }
 
 function setTargets(node, i = true) {
+  /*
+  This function uses the children, height,
+  and depth to generate a "target" y axis for
+  construction workers that begin working
+  constructing a path for each child.
+  */
   try {
 
     let children = node.children
@@ -209,6 +241,7 @@ function setTargets(node, i = true) {
     console.error(err)
     throw err
   }
+  return node
 }
 function retrieveChild(childName, childrenArray) {
   return childrenArray.find(child => {

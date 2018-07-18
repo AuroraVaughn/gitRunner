@@ -37,11 +37,25 @@ body {
   text-align: center;
 }
 
-#build-button {
+.build-button {
   position: absolute;
-  background-color: #dce2e6;
-  padding: 5px;
+  color: #dce2e6;
+  background-color: #dd510e;
+  font-size: 1.3rem;
+  right: 20px;
+  padding: 3px;
   margin: 5px;
+  z-index: 1;
+}
+
+.build-button::before {
+  content: '||||||';
+  color: black;
+}
+
+button.build-button:hover {
+  color: #dce2e6;
+  background-color: #000;
 }
 
 .instruction-container {
