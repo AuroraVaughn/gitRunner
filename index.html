@@ -36,16 +36,32 @@
         <div class="instruction">Enter the Github Repo Information</div>
         <div class="info">
             <label for="owner">Account/Organization:</label>
-            <input type="text" id="uname" name="account" required minLength="1" placeholder="enter repo name" />
+            <input type="text" id="uname" name="account" required minLength="1" placeholder="enter repo owner" />
         </div>
         <div class="info">
-            <label for="reponame">Owner/Project Name:</label>
+            <label for="reponame">Project Name:</label>
             <input type="text" id="uname" name="reponame" required minLength="1" placeholder="enter repo name" />
         </div>
     </div>
     <button onclick="onClickBuildGame()" id="build-button">Build Game</button>
     <div id="ph_game"></div>
+    <div class="instruction-container">
 
+        <h2> Instructions</h2>
+        <p>In the boxes above enter any public github repo information. Account/organization is the name of a repo owner. The
+            project name is the name of the project as it appears in the URL.</p>
+        <p> https://github.com /
+            <span class="emphasis">account_or_organization</span> /
+            <span class="emphasis">project_name</span>
+        </p>
+
+
+
+
+        </p>
+        <img class="logo" src="images/git-runner-logo.png" />
+
+    </div>
     <script src="js/ConstructionWorker.js"></script>
     <script src="js/seedRubric.js"></script>
     <script src="js/folderClass.js"> </script>
